@@ -68,23 +68,16 @@ function GameScreen() {
 
   return (
     <div className="App">
-      <header className="game-header">
-        <h1>Son of Card</h1>
-        <Link to="/" className="home-link">Back to Home</Link>
-      </header>
-      
       <div className="game-container">
         <div className="sidebar">
           <Deck cards={playerDeck} onDrawCard={handleDrawCard} />
         </div>
-        
         <div className="main-area">
           <PlayingArea 
             playerCards={playerField}
             opponentCards={opponentField}
             onCardSelect={handleCardSelect}
           />
-          
           <div className="player-hand-area">
             <Hand cards={playerHand} onCardClick={handlePlayCard} />
           </div>

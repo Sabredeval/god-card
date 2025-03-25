@@ -8,10 +8,14 @@ const Card = ({
     imageLink = "/images/Zeus.png", 
     title = "", 
     description = "",
+    type = "",
+    worshipCost = 0, // property for gods only
     onCardClick = () => {}
 }) => {
+    const isGod = type === "god";
+    
     return (
-        <div className="card-container" onClick={() => onCardClick(id)}>
+        <div className={`card-container ${isGod ? 'card-god' : ''}`} onClick={() => onCardClick(id)}>
             <div className="card-stats">
                 <div className="card-attack">
                     {attack}
@@ -29,6 +33,11 @@ const Card = ({
             <div className="card-description">
                 {description || "No description available."}
             </div>
+            {isGod && worshipCost > 0 && (
+                <div className="card-worship-cost">
+                    {worshipCost} ✨
+                </div>
+            )}
         </div>
     );
 }

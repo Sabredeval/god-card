@@ -9,11 +9,23 @@
   font-family: 'Cinzel', serif;
   transition: transform 0.3s ease;
   z-index: 2;
+  position: relative;
 }
 
 .card-container:hover {
   transform: translateY(-10px);
   box-shadow: 0 12px 18px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+/* God card styling */
+.card-god {
+  background: linear-gradient(to bottom, #2b2a2a, #3a2828);
+  border: 1px solid #d4b670;
+}
+
+.card-god .card-title {
+  background-color: rgba(212, 182, 112, 0.3);
 }
 
 .card-stats {
@@ -76,4 +88,23 @@
   font-style: italic;
   max-height: 60px;
   overflow-y: auto;
+}
+
+/* Worship cost badge */
+.card-worship-cost {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: linear-gradient(to bottom, #d4b670, #a68a47);
+  color: #000;
+  font-weight: bold;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid gold;
+  font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
