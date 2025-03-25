@@ -1,49 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles/App.css';
-import Card from './components/Card';
-import Deck from './components/Deck';
-import Hand from './components/Hand';
-import PlayingArea from './components/PlayingArea';
+import Home from './Home';
+import GameScreen from './GameScreen';
+import DeckBuilder from './DeckBuilder';
 
 function App() {
-  const [playerDeck, setPlayerDeck] = useState([
-  ]);
-  
-  const [playerHand, setPlayerHand] = useState([
-    {
-      id: 1,
-      title: "Zeus",
-      health: 5,
-      attack: 4,
-      imageLink: "/images/Zeus.png",
-      description: "God of thunder and lightning"
-    }
-  ]);
-  
-  const [playerField, setPlayerField] = useState([]);
-  const [opponentField, setOpponentField] = useState([]);
-
-
   return (
-    <div className="App">
-      <div className="game-container">
-        <div className="sidebar">
-          <Deck cards={playerDeck} onDrawCard={console.log} />
-        </div>
-        
-        <div className="main-area">
-          <PlayingArea 
-            playerCards={playerField}
-            opponentCards={opponentField}
-            // onCardSelect={handleCardSelect}
-          />
-          
-          <div className="player-hand-area">
-            <Hand cards={playerHand} onCardClick={console.log} />
-          </div>
-        </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/game" element={<GameScreen />} />
+          <Route path="/deck-builder" element={<DeckBuilder />} />
+          <Route path="/deck-builder/:deckId" element={<DeckBuilder />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
