@@ -1,0 +1,32 @@
+/* PlayingArea styling will go here */
+.playing-area-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 60vh;
+}
+  
+.opponent-area, .player-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+  
+.middle-area {
+    height: 20px;
+}
+  
+.cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+  
+.card-slot {
+    margin: 5px;
+}
+  
+.area-label {
+    padding: 10px;
+    text-align: center;
+}
