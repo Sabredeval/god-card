@@ -1,16 +1,17 @@
 import React from "react";
-import { useState } from "react";
 import "../styles/Card.css";
 
-const Card = ( ) => {
-    const [health, setHealth] = useState(0);
-    const [attack, setAttack] = useState(0);
-    const [imageLink, setImageLink] = useState("/images/Zeus.png");
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-
+const Card = ({ 
+    id,
+    health = 0, 
+    attack = 0, 
+    imageLink = "/images/Zeus.png", 
+    title = "", 
+    description = "",
+    onCardClick = () => {}
+}) => {
     return (
-        <div className="card-container">
+        <div className="card-container" onClick={() => onCardClick(id)}>
             <div className="card-stats">
                 <div className="card-attack">
                     {attack}

@@ -1,29 +1,33 @@
-/* Hand styling will go here */
 .hand-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .hand-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  height: 180px;
+  max-width: 100%;
+  padding: 0 20px;
+  z-index: 10;
 }
 
 .hand-card-slot {
-    margin: 0 -20px;  /* Create card overlap effect */
-    transition: transform 0.2s;
+  margin: 0 -15px;
+  transition: transform 0.2s;
 }
-  
+
 .hand-card-slot:hover {
-    transform: translateY(-20px);
-    z-index: 10;
+  transform: translateY(-20px);
+  z-index: 10;
 }
-  
+
 .hand-label {
-    margin-top: 10px;
-    font-size: 14px;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #ccc;
 }

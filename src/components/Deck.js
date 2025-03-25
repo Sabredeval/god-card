@@ -1,11 +1,10 @@
 import React from "react";
 import "../styles/Deck.css";
 
-const Card = ({
-    cards = [ ],
-    onDeckClick = ( ) => { }
+const Deck = ({
+    cards = [],
+    onDeckClick = () => {}
 }) => {
-    
 
     return (
         <div className="deck-container">
@@ -17,4 +16,4 @@ const Card = ({
     );
 }
 
-export default Card;
+export default Deck;
