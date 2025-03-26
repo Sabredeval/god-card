@@ -67,10 +67,6 @@
   border: 3px solid #444;
 }
 
-.player-stats {
-  flex: 1;
-}
-
 .player-stats h3 {
   margin: 0 0 5px 0;
   font-size: 20px;
@@ -400,7 +396,6 @@
 .deck-card {
   background-color: #282828;
   border-radius: 8px;
-  padding: 20px;
   transition: all 0.2s ease;
   border: 1px solid #383838;
 }

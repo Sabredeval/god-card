@@ -18,14 +18,13 @@ const Home = () => {
         collection: {
             total: 50,
             collected: 0,
-            common: 0,
+            common: 5,
             uncommon: 0,
             rare: 0,
             legendary: 0
         }
     });
 
-    // Daily quests (placeholder data)
     const [dailyQuests, setDailyQuests] = useState([
     ]);
 
@@ -92,7 +91,6 @@ const Home = () => {
         setShowDeckForm(false);
     };
 
-    // Calculate collection percentages for progress bars
     const collectionPercentages = {
         common: (playerData.collection.common / 20) * 100,
         uncommon: (playerData.collection.uncommon / 15) * 100,
@@ -191,7 +189,7 @@ const Home = () => {
                 <div className="home-column right-column">
                     {/* Game Modes Section */}
                     <div className="game-modes-section section-card">
-                        <h2>Play Mode</h2>
+                        <h2>Play</h2>
                         <div className="game-modes">
                             <div className="game-mode" onClick={() => handlePlayGame('quick')}>
                                 <div className="mode-icon quick-icon">⚡</div>
@@ -205,6 +203,13 @@ const Home = () => {
                                 <div className="mode-details">
                                     <h3>Story</h3>
                                     <p>Go through story and unlock new cards</p>
+                                </div>
+                            </div>
+                            <div className="game-mode" onClick={() => handlePlayGame('practice')}>
+                                <div className="mode-icon practice-icon">🎲</div>
+                                <div className="mode-details">
+                                    <h3>Draft</h3>
+                                    <p>Lorem ipsum</p>
                                 </div>
                             </div>
                             <div className="game-mode" onClick={() => handlePlayGame('tournament')}>

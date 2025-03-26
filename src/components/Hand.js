@@ -2,15 +2,21 @@ import React from "react";
 import Card from "./Card";
 import "../styles/Hand.css";
 
-const Hand = ({ 
-  cards = [], 
-  onCardClick = () => {} 
-}) => {
+const Hand = ({ cards = [], onCardClick = () => {}, availableWorshipers = 0 }) => {
   return (
     <div className="hand-container">
+      {availableWorshipers > 0 && (
+        <div className="worshiper-counter">
+          <span className="worshiper-icon">✨</span>
+          <span className="worshiper-number">{availableWorshipers}</span>
+        </div>
+      )}
       <div className="hand-cards">
-        {cards.map((card) => (
-          <div key={card.id} className="hand-card-slot">
+        {cards.map((card, index) => (
+          <div 
+            key={`${card.id}-${index}`} 
+            className="hand-card-slot"
+          >
             <Card
               id={card.id}
               health={card.health}
@@ -18,12 +24,13 @@ const Hand = ({
               imageLink={card.imageLink}
               title={card.title}
               description={card.description}
+              type={card.type}
+              worshipCost={card.type === "god" ? (card.worshipCost || 5) : 0}
               onCardClick={() => onCardClick(card.id)}
             />
           </div>
         ))}
       </div>
-      <div className="hand-label">Your Hand</div>
     </div>
   );
 };
