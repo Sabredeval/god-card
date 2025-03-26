@@ -9,15 +9,50 @@ const Card = ({
     title = "", 
     description = "",
     type = "",
-    worshipCost = 0,  // For god cards
-    onCardClick = () => {}
+    worshipCost = 0,
+    effect = "",
+    row = "",
+    onCardClick = () => {},
+    draggable = false
 }) => {
     const isGod = type === "god";
+    
+    const handleDragStart = (e) => {
+        // Store card data in the drag event
+        const cardData = {
+            id,
+            health,
+            attack,
+            imageLink,
+            title,
+            type,
+            worshipCost: isGod ? worshipCost : 0
+        };
+        e.dataTransfer.setData("cardData", JSON.stringify(cardData));
+        // Set a custom drag image (optional)
+        const dragImage = e.target.cloneNode(true);
+        dragImage.style.transform = "scale(0.7)";
+        document.body.appendChild(dragImage);
+        e.dataTransfer.setDragImage(dragImage, 70, 100);
+        setTimeout(() => {
+            document.body.removeChild(dragImage);
+        }, 0);
+        
+        // Add dragging class for visual feedback
+        e.target.classList.add("dragging");
+    };
+    
+    const handleDragEnd = (e) => {
+        e.target.classList.remove("dragging");
+    };
     
     return (
         <div 
             className={`card-container ${isGod ? 'card-god' : ''}`} 
             onClick={() => onCardClick(id)}
+            draggable={draggable}
+            onDragStart={draggable ? handleDragStart : null}
+            onDragEnd={draggable ? handleDragEnd : null}
         >
             <div className="card-stats">
                 <div className="card-attack">{attack}</div>

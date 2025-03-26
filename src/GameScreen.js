@@ -1,3 +1,4 @@
+// Add these imports and update your component
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/App.css';
@@ -31,6 +32,7 @@ function GameScreen() {
     }
   ]);
   const [opponentBackRow, setOpponentBackRow] = useState([]);
+  const [selectedRow, setSelectedRow] = useState('front');
 
   /* handle functions */
   const handleDrawCard = () => {
@@ -42,7 +44,30 @@ function GameScreen() {
     }
   };
 
-  const handlePlayCard = (cardId) => {
+  const getCardClasses = (cards) => {
+    if (!cards || !cards.length) return { rowClass: '', cardClass: '' };
+    
+    if (cards.length > 12) {
+      return { 
+        rowClass: 'cards-many', 
+        cardClass: 'scale-smallest' 
+      };
+    } else if (cards.length > 8) {
+      return { 
+        rowClass: 'cards-many', 
+        cardClass: 'scale-smaller' 
+      };
+    } else if (cards.length > 5) {
+      return { 
+        rowClass: 'cards-medium', 
+        cardClass: 'scale-small' 
+      };
+    }
+    
+    return { rowClass: '', cardClass: '' };
+  };
+
+  const handlePlayCard = (cardId, targetRow = selectedRow) => {
     const cardIndex = playerHand.findIndex(card => card.id === cardId);
     if (cardIndex !== -1) {
       const card = playerHand[cardIndex];
@@ -56,12 +81,24 @@ function GameScreen() {
         setWorshipers(worshipers - (card.worshipCost || 5));
       }
       
+      const targetRowCards = targetRow === 'front' ? playerFrontRow : playerBackRow;
+      if (targetRowCards.length >= 15) {
+        alert('This row is full (maximum 15 cards)');
+        return;
+      }
+      
       const newHand = [...playerHand];
       newHand.splice(cardIndex, 1);
       setPlayerHand(newHand);
+      
+      if (targetRow === 'front') {
+        setPlayerFrontRow([...playerFrontRow, card]);
+      } else {
+        setPlayerBackRow([...playerBackRow, card]);
+      }
     }
   };
-
+    
   const handleCardSelect = (cardId, row) => {
     console.log(`Selected card ${cardId} from ${row}`);
   };
@@ -82,6 +119,72 @@ function GameScreen() {
       handleDrawCard();
     }
   }, []);
+
+  const isCardPlayable = (card) => {
+    if (!isPlayerTurn) return false;
+    
+    // Check if it's a god card and player has enough worshipers
+    if (card.type === "god" && worshipers < (card.worshipCost || 5)) {
+      return false;
+    }
+    
+    return true;
+  };
+
+  // Add these event handlers for drag and drop
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    if (e.currentTarget.classList.contains('field-row')) {
+      e.currentTarget.classList.add('droppable-hover');
+    }
+  };
+
+  const handleDragLeave = (e) => {
+    e.currentTarget.classList.remove('droppable-hover');
+  };
+
+  const handleDrop = (e, targetRow) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('droppable-hover');
+    
+    try {
+      const cardDataString = e.dataTransfer.getData("cardData");
+      if (!cardDataString) return;
+      
+      const cardData = JSON.parse(cardDataString);
+      
+      handlePlayCard(cardData.id, targetRow);
+    } catch (error) {
+      console.error("Error processing drag and drop:", error);
+    }
+  };
+
+
+  
+  // Set drag and drop active class when dragging starts
+  useEffect(() => {
+    const handleDragStart = () => {
+      if (isPlayerTurn) {
+        document.querySelector('.player-front-row').classList.add('droppable');
+        document.querySelector('.player-back-row').classList.add('droppable');
+      }
+    };
+    
+    const handleDragEnd = () => {
+      document.querySelector('.player-front-row').classList.remove('droppable');
+      document.querySelector('.player-front-row').classList.remove('droppable-hover');
+      document.querySelector('.player-back-row').classList.remove('droppable');
+      document.querySelector('.player-back-row').classList.remove('droppable-hover');
+    };
+    
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('dragend', handleDragEnd);
+    
+    return () => {
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('dragend', handleDragEnd);
+    };
+  }, [isPlayerTurn]);
 
   return (
     <div className="game-grid">
@@ -137,8 +240,13 @@ function GameScreen() {
           </div>
         </div>
         
-        {/* Player front row */}
-        <div className="field-row player-front-row">
+        {/* Player front row - Add drag and drop handlers */}
+        <div 
+          className="field-row player-front-row"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={(e) => handleDrop(e, 'front')}
+        >
           <div className="row-cards">
             {playerFrontRow.map(card => (
               <div key={card.id} className="field-card" onClick={() => handleCardSelect(card.id, 'player-front')}>
@@ -159,8 +267,13 @@ function GameScreen() {
           </div>
         </div>
         
-        {/* Player back row */}
-        <div className="field-row player-back-row">
+        {/* Player back row - Add drag and drop handlers */}
+        <div 
+          className="field-row player-back-row"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={(e) => handleDrop(e, 'back')}
+        >
           <div className="row-cards">
             {playerBackRow.map(card => (
               <div key={card.id} className="field-card" onClick={() => handleCardSelect(card.id, 'player-back')}>
@@ -187,6 +300,8 @@ function GameScreen() {
         <Hand 
           cards={playerHand} 
           onCardClick={(cardId) => handlePlayCard(cardId)}
+          availableWorshipers={worshipers}
+          cardPlayable={isCardPlayable}
         />
       </div>
       
@@ -204,7 +319,7 @@ function GameScreen() {
         </div>
 
         <button className="btn-end-turn" onClick={endTurn} disabled={!isPlayerTurn}>
-            {isPlayerTurn ? "End Turn" : "Opponent's Turn..."}
+          {isPlayerTurn ? "End Turn" : "Opponent's Turn..."}
         </button>
 
       </div>
