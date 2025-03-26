@@ -27,7 +27,6 @@ function GameScreen() {
       title: "Opponent Creature",
       health: 3,
       attack: 2,
-      imageLink: "/images/creature.png",
       type: "beast"
     }
   ]);
@@ -159,8 +158,6 @@ function GameScreen() {
     }
   };
 
-
-  
   // Set drag and drop active class when dragging starts
   useEffect(() => {
     const handleDragStart = () => {
@@ -240,7 +237,7 @@ function GameScreen() {
           </div>
         </div>
         
-        {/* Player front row - Add drag and drop handlers */}
+        {/* Player front row */}
         <div 
           className="field-row player-front-row"
           onDragOver={handleDragOver}

@@ -18,7 +18,6 @@ const Card = ({
     const isGod = type === "god";
     
     const handleDragStart = (e) => {
-        // Store card data in the drag event
         const cardData = {
             id,
             health,
@@ -29,7 +28,6 @@ const Card = ({
             worshipCost: isGod ? worshipCost : 0
         };
         e.dataTransfer.setData("cardData", JSON.stringify(cardData));
-        // Set a custom drag image (optional)
         const dragImage = e.target.cloneNode(true);
         dragImage.style.transform = "scale(0.7)";
         document.body.appendChild(dragImage);
@@ -38,7 +36,6 @@ const Card = ({
             document.body.removeChild(dragImage);
         }, 0);
         
-        // Add dragging class for visual feedback
         e.target.classList.add("dragging");
     };
     
@@ -59,12 +56,9 @@ const Card = ({
                 <div className="card-health">{health}</div>
             </div>
             <div className="card-image">
-                <img src={imageLink} alt={title} />
+                <img src={"/images/card-default.png"} alt={title} />
             </div>
             <div className="card-title">{title || "Unnamed Card"}</div>
-            <div className="card-description">
-                {description || "No description available."}
-            </div>
             {isGod && worshipCost > 0 && (
                 <div className="card-worship-cost">
                     {worshipCost} ✨
